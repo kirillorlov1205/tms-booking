@@ -11,10 +11,11 @@ import static com.codeborne.selenide.Selenide.open;
 public class MainPage {
 
     private static final String MAIN_PAGE_URL = "https://www.booking.com/";
-    private static final By SEARCH_FIELD_LOCATOR = By.xpath("//input[@name='ss']");
-    private static final By SUBMIT_SEARCH_BUTTON_LOCATOR = By.xpath("//button[@type='submit']");
+    private static final By SEARCH_FIELD = By.xpath("//input[@name='ss']");
+    private static final By SUBMIT_SEARCH_BUTTON = By.xpath("//button[@type='submit']");
     private static final By SEARCH_POPUP_CLOSE_BUTTON = By.xpath("//button[contains(@aria-label," +
             "'Dismiss')]");
+    private static final String CITY_OPTION = "//div[@class='a3332d346a' and text()='%s']";
 
     public MainPage openMainPage() {
         open(MAIN_PAGE_URL);
@@ -22,12 +23,17 @@ public class MainPage {
     }
 
     public MainPage fillSearchField(String city) {
-        $(SEARCH_FIELD_LOCATOR).shouldBe(Condition.visible, Duration.ofSeconds(10)).sendKeys(city);
+        $(SEARCH_FIELD).shouldBe(Condition.visible, Duration.ofSeconds(10)).sendKeys(city);
+        return this;
+    }
+
+    public MainPage selectCityOptionByText(String optionName) {
+        $(By.xpath(String.format(CITY_OPTION, optionName))).shouldBe(Condition.visible, Duration.ofSeconds(10)).click();
         return this;
     }
 
     public HotelsListPage submitSearch() {
-        $(SUBMIT_SEARCH_BUTTON_LOCATOR).click();
+        $(SUBMIT_SEARCH_BUTTON).click();
         return new HotelsListPage();
     }
 

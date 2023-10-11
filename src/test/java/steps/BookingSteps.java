@@ -50,8 +50,9 @@ public class BookingSteps {
     @When("User does search in {string} city")
     public void userDoesSearch(String city) {
         mainPage = new MainPage();
-        mainPage.fillSearchField(city)
-                .closeSearchingPopUp()
+        mainPage.closeSearchingPopUp()
+                .fillSearchField(city)
+                .selectCityOptionByText(city)
                 .submitSearch();
     }
 
@@ -61,10 +62,9 @@ public class BookingSteps {
         Assert.assertTrue(hotelsListPage.isHotelDisplayed(hotelName), "Hotel is not displayed");
     }
 
-    @And("Hotel rating is {string}")
-    public void hotelRatingIs(String expectedRating) {
+    @And("Hotel {string} rating should be {string}")
+    public void hotelRatingIs(String hotelName, String expectedRating) {
         hotelsListPage = new HotelsListPage();
-        String hotelName = "Hawkwood Apartments";
         String actualHotelRating = hotelsListPage.getHotelRating(hotelName);
         Assert.assertEquals(actualHotelRating, expectedRating, "Hotel rating doesn't match expected");
     }
